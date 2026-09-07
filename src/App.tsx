@@ -1,10 +1,13 @@
 import { useEffect } from 'react'
 import './App.css'
+import { CUSTOMER_BRAND_NAME } from './config/presentation.ts'
 import { LoginPage } from './features/auth/LoginPage.tsx'
 import { useStaffAuth } from './features/auth/useStaffAuth.ts'
+import { PublicGiftPage } from './features/gifts/PublicGiftPage.tsx'
 import { StaffGiftPage } from './features/gifts/StaffGiftPage.tsx'
+import { getGiftTokenFromPath } from './features/gifts/giftPresentation.ts'
 
-function App() {
+function StaffApplication() {
   const auth = useStaffAuth()
 
   useEffect(() => {
@@ -18,7 +21,7 @@ function App() {
     return (
       <main className="state-shell">
         <section className="state-card" role="alert">
-          <p className="eyebrow">CHIC GIFT</p>
+          <p className="eyebrow">{CUSTOMER_BRAND_NAME}</p>
           <h1>Chưa thể khởi động ứng dụng</h1>
           <p>{auth.configurationError}</p>
           <p className="state-note">Vui lòng kiểm tra cấu hình môi trường dành cho máy này.</p>
@@ -43,7 +46,7 @@ function App() {
     return (
       <main className="state-shell">
         <section className="state-card" role="alert">
-          <p className="eyebrow">CHIC GIFT</p>
+          <p className="eyebrow">{CUSTOMER_BRAND_NAME}</p>
           <h1>Chưa thể kiểm tra quyền truy cập</h1>
           <p>{auth.notice}</p>
           <div className="button-row">
@@ -79,6 +82,16 @@ function App() {
       onSubmit={auth.signIn}
     />
   )
+}
+
+function App() {
+  const giftToken = getGiftTokenFromPath(window.location.pathname)
+
+  if (giftToken !== null) {
+    return <PublicGiftPage giftToken={giftToken} />
+  }
+
+  return <StaffApplication />
 }
 
 export default App

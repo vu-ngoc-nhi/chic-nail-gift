@@ -1,4 +1,5 @@
 import { useState, type FormEvent } from 'react'
+import { CUSTOMER_BRAND_MARK, CUSTOMER_BRAND_NAME } from '../../config/presentation.ts'
 
 type LoginPageProps = {
   busy: boolean
@@ -21,8 +22,8 @@ export function LoginPage({ busy, notice, onSubmit }: LoginPageProps) {
   return (
     <main className="auth-shell">
       <section className="auth-card" aria-labelledby="login-title">
-        <div className="brand-mark" aria-hidden="true">CG</div>
-        <h1 id="login-title">Đăng nhập CHIC GIFT</h1>
+        <div className="brand-mark" aria-hidden="true">{CUSTOMER_BRAND_MARK}</div>
+        <h1 id="login-title">Đăng nhập {CUSTOMER_BRAND_NAME}</h1>
         <p className="supporting-text">Dành cho nhân viên tạo quà sau khi kiểm tra hóa đơn trên KiotViet.</p>
 
         <form className="form-stack" onSubmit={handleSubmit} aria-describedby={notice ? 'login-message' : undefined}>

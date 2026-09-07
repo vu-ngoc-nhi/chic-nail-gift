@@ -5,6 +5,7 @@ import {
   buildPublicGiftUrl,
   formatAmountInput,
   formatVnd,
+  getGiftTokenFromPath,
   hasInternalWhitespace,
   normalizeBillCode,
   parseVndAmount,
@@ -41,23 +42,26 @@ test('keeps VND input integer-only and formats it naturally', () => {
 })
 
 test('builds the future customer URL from one centralized helper', () => {
-  assert.equal(
-    buildPublicGiftUrl('https://gift.chic.test/', 'token_123'),
-    'https://gift.chic.test/g/token_123',
-  )
+  const publicUrl = buildPublicGiftUrl('https://gift.chic.test/', 'opaque_token_123')
+  assert.equal(publicUrl, 'https://gift.chic.test/g/opaque_token_123')
+  assert.equal(buildPublicGiftUrl('https://gift.chic.test/', 'opaque_token_123'), publicUrl)
+  assert.doesNotMatch(publicUrl, /bill|amount|staff|campaign|prize|inventory|database/i)
+  assert.equal(getGiftTokenFromPath('/g/token_123'), 'token_123')
+  assert.equal(getGiftTokenFromPath('/g/token%2Fencoded/'), 'token/encoded')
+  assert.equal(getGiftTokenFromPath('/g/'), '')
+  assert.equal(getGiftTokenFromPath('/staff'), null)
 })
 
 test('presents new and existing Gifts as recoverable results', () => {
   assert.deepEqual(presentGiftResult(result({})), {
     tone: 'success',
     title: 'Quà đã sẵn sàng 🎁',
-    message: 'Gửi đường dẫn bên dưới để khách mở quà.',
+    message: 'Mời khách quét mã để tiếp tục nhận quà.',
     showsGift: true,
   })
-  assert.equal(
-    presentGiftResult(result({ result_code: 'EXISTING_GIFT', is_new: false })).showsGift,
-    true,
-  )
+  const existing = presentGiftResult(result({ result_code: 'EXISTING_GIFT', is_new: false }))
+  assert.equal(existing.showsGift, true)
+  assert.equal(existing.message, 'Mời khách sử dụng lại mã QR bên dưới.')
 })
 
 test('presents mismatch, minimum, campaign, and invalid results safely', () => {

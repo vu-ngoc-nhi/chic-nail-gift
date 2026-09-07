@@ -61,20 +61,37 @@ export function buildPublicGiftUrl(baseUrl: string, giftToken: string) {
   return `${baseUrl.replace(/\/+$/, '')}/g/${encodeURIComponent(giftToken)}`
 }
 
+export function getGiftTokenFromPath(pathname: string) {
+  if (pathname === '/g' || pathname === '/g/') {
+    return ''
+  }
+
+  const match = /^\/g\/([^/]+)\/?$/.exec(pathname)
+  if (!match) {
+    return null
+  }
+
+  try {
+    return decodeURIComponent(match[1])
+  } catch {
+    return ''
+  }
+}
+
 export function presentGiftResult(result: CreateGiftResult): GiftResultPresentation {
   switch (result.result_code) {
     case 'CREATED_GIFT':
       return {
         tone: 'success',
         title: 'Quà đã sẵn sàng 🎁',
-        message: 'Gửi đường dẫn bên dưới để khách mở quà.',
+        message: 'Mời khách quét mã để tiếp tục nhận quà.',
         showsGift: true,
       }
     case 'EXISTING_GIFT':
       return {
         tone: 'info',
         title: 'Bill này đã được tạo quà trước đó.',
-        message: 'Dùng lại đúng đường dẫn quà hiện có cho khách.',
+        message: 'Mời khách sử dụng lại mã QR bên dưới.',
         showsGift: true,
       }
     case 'AMOUNT_MISMATCH':

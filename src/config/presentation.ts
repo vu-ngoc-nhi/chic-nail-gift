@@ -1,0 +1,2 @@
+export const CUSTOMER_BRAND_NAME = 'CHIC GIFT'
+export const CUSTOMER_BRAND_MARK = 'CG'

@@ -66,7 +66,7 @@ export const supabase = supabaseConfigurationError
 
 export type ChicSupabaseClient = NonNullable<typeof supabase>
 
-export function getPublicAppUrl() {
-  const configuredUrl = import.meta.env.VITE_PUBLIC_APP_URL?.trim()
+export function getPublicGiftBaseUrl() {
+  const configuredUrl = import.meta.env.VITE_PUBLIC_GIFT_BASE_URL?.trim()
   return (configuredUrl || window.location.origin).replace(/\/+$/, '')
 }

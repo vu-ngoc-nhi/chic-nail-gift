@@ -1,6 +1,8 @@
 import { useRef, useState, type FormEvent } from 'react'
+import { QRCodeSVG } from 'qrcode.react'
+import { CUSTOMER_BRAND_NAME } from '../../config/presentation.ts'
 import type { StaffRole } from '../auth/useStaffAuth.ts'
-import { getPublicAppUrl, supabase } from '../../lib/supabase.ts'
+import { getPublicGiftBaseUrl, supabase } from '../../lib/supabase.ts'
 import { createGift, GiftOperationError } from './giftOperations.ts'
 import {
   amountDigits,
@@ -38,7 +40,7 @@ export function StaffGiftPage({ email, role, onLogout, onUnauthorized }: StaffGi
 
   const presentation = result ? presentGiftResult(result) : null
   const publicGiftLink = result?.gift_token
-    ? buildPublicGiftUrl(getPublicAppUrl(), result.gift_token)
+    ? buildPublicGiftUrl(getPublicGiftBaseUrl(), result.gift_token)
     : null
 
   function validateForm() {
@@ -100,9 +102,9 @@ export function StaffGiftPage({ email, role, onLogout, onUnauthorized }: StaffGi
 
     try {
       await navigator.clipboard.writeText(publicGiftLink)
-      setCopyStatus('Đã sao chép đường dẫn.')
+      setCopyStatus('Đã sao chép link quà.')
     } catch {
-      setCopyStatus('Không thể tự sao chép. Vui lòng chọn và sao chép đường dẫn bên dưới.')
+      setCopyStatus('Không thể sao chép tự động. Vui lòng sao chép link thủ công.')
     }
   }
 
@@ -120,7 +122,9 @@ export function StaffGiftPage({ email, role, onLogout, onUnauthorized }: StaffGi
     <main className="staff-shell">
       <header className="staff-header">
         <div>
-          <a className="staff-brand" href="/staff" aria-label="Trang tạo quà CHIC GIFT">CHIC GIFT</a>
+          <a className="staff-brand" href="/staff" aria-label={`Trang tạo quà ${CUSTOMER_BRAND_NAME}`}>
+            {CUSTOMER_BRAND_NAME}
+          </a>
         </div>
         <div className="account-actions">
           <div className="account-summary">
@@ -214,6 +218,19 @@ export function StaffGiftPage({ email, role, onLogout, onUnauthorized }: StaffGi
 
               {presentation.showsGift && publicGiftLink && (
                 <>
+                  <div className="qr-handoff">
+                    <div className="qr-frame">
+                      <QRCodeSVG
+                        value={publicGiftLink}
+                        size={256}
+                        level="M"
+                        marginSize={4}
+                        bgColor="#ffffff"
+                        fgColor="#111111"
+                        title={`Mã QR mở quà ${CUSTOMER_BRAND_NAME}`}
+                      />
+                    </div>
+                  </div>
                   <dl className="gift-summary">
                     <div><dt>Mã hóa đơn</dt><dd>{result.bill_code}</dd></div>
                     <div><dt>Giá trị</dt><dd>{result.bill_amount_vnd === null ? '—' : formatVnd(result.bill_amount_vnd)}</dd></div>
@@ -223,7 +240,7 @@ export function StaffGiftPage({ email, role, onLogout, onUnauthorized }: StaffGi
                     <label htmlFor="public-gift-link">Đường dẫn mở quà</label>
                     <input id="public-gift-link" type="text" readOnly value={publicGiftLink} onFocus={(event) => event.currentTarget.select()} />
                     <button className="button button--secondary" type="button" onClick={() => void copyGiftLink()}>
-                      COPY LINK
+                      SAO CHÉP LINK
                     </button>
                     {copyStatus && <span className="copy-status" role="status">{copyStatus}</span>}
                   </div>
@@ -231,7 +248,7 @@ export function StaffGiftPage({ email, role, onLogout, onUnauthorized }: StaffGi
               )}
 
               <button className="button button--quiet result-reset" type="button" onClick={resetForNextBill}>
-                Tạo bill tiếp theo
+                TẠO BILL TIẾP THEO
               </button>
             </section>
           )}
