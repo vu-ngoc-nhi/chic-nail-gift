@@ -1,14 +1,83 @@
+import { useEffect } from 'react'
 import './App.css'
+import { LoginPage } from './features/auth/LoginPage.tsx'
+import { useStaffAuth } from './features/auth/useStaffAuth.ts'
+import { StaffGiftPage } from './features/gifts/StaffGiftPage.tsx'
 
 function App() {
+  const auth = useStaffAuth()
+
+  useEffect(() => {
+    const targetPath = auth.status === 'authorized' ? '/staff' : '/login'
+    if (window.location.pathname !== targetPath) {
+      window.history.replaceState(null, '', targetPath)
+    }
+  }, [auth.status])
+
+  if (auth.status === 'configuration-error') {
+    return (
+      <main className="state-shell">
+        <section className="state-card" role="alert">
+          <p className="eyebrow">CHIC GIFT</p>
+          <h1>Chưa thể khởi động ứng dụng</h1>
+          <p>{auth.configurationError}</p>
+          <p className="state-note">Vui lòng kiểm tra cấu hình môi trường dành cho máy này.</p>
+        </section>
+      </main>
+    )
+  }
+
+  if (auth.status === 'loading' || (auth.status === 'checking' && auth.email)) {
+    return (
+      <main className="state-shell" aria-busy="true">
+        <section className="state-card state-card--centered">
+          <span className="loading-dot" aria-hidden="true" />
+          <h1>Đang kiểm tra phiên làm việc…</h1>
+          <p>Vui lòng chờ trong giây lát.</p>
+        </section>
+      </main>
+    )
+  }
+
+  if (auth.status === 'connection-error') {
+    return (
+      <main className="state-shell">
+        <section className="state-card" role="alert">
+          <p className="eyebrow">CHIC GIFT</p>
+          <h1>Chưa thể kiểm tra quyền truy cập</h1>
+          <p>{auth.notice}</p>
+          <div className="button-row">
+            <button className="button button--primary" type="button" onClick={() => void auth.retryAuthorization()}>
+              Thử lại
+            </button>
+            <button className="button button--quiet" type="button" onClick={() => void auth.signOut()}>
+              Đăng xuất
+            </button>
+          </div>
+        </section>
+      </main>
+    )
+  }
+
+  if (auth.status === 'authorized' && auth.role) {
+    return (
+      <StaffGiftPage
+        email={auth.email}
+        role={auth.role}
+        onLogout={() => auth.signOut()}
+        onUnauthorized={() => auth.signOut(
+          'Phiên làm việc không còn quyền tạo quà. Vui lòng đăng nhập lại hoặc báo quản lý.',
+        )}
+      />
+    )
+  }
+
   return (
-    <main className="app">
-      <div className="app__content">
-        <h1>CHIC GIFT</h1>
-        <p>Secret Gift Campaign Platform</p>
-        <p className="app__status">Development environment ready.</p>
-      </div>
-    </main>
+    <LoginPage
+      busy={auth.status === 'checking'}
+      notice={auth.notice}
+      onSubmit={auth.signIn}
+    />
   )
 }
 
