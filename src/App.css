@@ -470,6 +470,20 @@ input:disabled {
   border-top: 4px solid var(--mocha);
 }
 
+.customer-card--gift-choice,
+.customer-card--reward {
+  width: min(100%, 38rem);
+}
+
+.customer-card--gift-choice {
+  border-top: 4px solid var(--accent);
+  text-align: center;
+}
+
+.customer-card--reward {
+  border-top: 4px solid var(--success);
+}
+
 .customer-brand {
   margin-bottom: 2.5rem;
   color: var(--chocolate);
@@ -511,8 +525,240 @@ input:disabled {
   font-weight: 800;
 }
 
+.customer-instruction {
+  margin-bottom: 0.35rem;
+  color: var(--chocolate) !important;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.12rem, 4vw, 1.35rem);
+  font-weight: 700;
+}
+
+.customer-revisit-note {
+  display: inline-block;
+  margin-bottom: 1.25rem;
+  padding: 0.45rem 0.75rem;
+  border-radius: 999px;
+  background: var(--beige);
+  color: var(--chocolate) !important;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
 .customer-description {
   font-size: 1.05rem;
+}
+
+.customer-description--compact {
+  margin: 2rem auto 0;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--line);
+  font-size: 0.92rem;
+}
+
+.secret-card-grid {
+  display: grid;
+  margin-top: 2rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(0.55rem, 2.5vw, 0.9rem);
+}
+
+.secret-card {
+  position: relative;
+  display: grid;
+  min-width: 0;
+  aspect-ratio: 0.86;
+  padding: 0.75rem 0.45rem 0.55rem;
+  overflow: hidden;
+  place-items: center;
+  border: 1px solid #cdb9a5;
+  border-radius: 0.8rem;
+  cursor: pointer;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.72), transparent 55%),
+    #efe1d2;
+  box-shadow: 0 8px 20px rgba(64, 43, 32, 0.09);
+  color: var(--chocolate);
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+
+.secret-card::after {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 48%;
+  border-top: 1px solid rgba(138, 107, 89, 0.28);
+  background: rgba(255, 253, 249, 0.22);
+  clip-path: polygon(0 100%, 50% 22%, 100% 100%);
+  content: '';
+}
+
+.secret-card:hover:not(:disabled) {
+  border-color: var(--accent);
+  box-shadow: 0 12px 28px rgba(64, 43, 32, 0.15);
+  transform: translateY(-3px);
+}
+
+.secret-card:disabled {
+  cursor: default;
+}
+
+.secret-card:disabled:not(.secret-card--selected) {
+  opacity: 0.42;
+}
+
+.secret-card--selected {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px rgba(181, 138, 89, 0.15), 0 18px 34px rgba(64, 43, 32, 0.18);
+  animation: envelope-open 900ms ease both;
+}
+
+.secret-card__flap {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 49%;
+  border-bottom: 1px solid rgba(138, 107, 89, 0.24);
+  background: #ead7c4;
+  clip-path: polygon(0 0, 100% 0, 50% 88%);
+  transform-origin: top;
+  transition: transform 520ms ease 180ms;
+}
+
+.secret-card--selected .secret-card__flap {
+  transform: rotateX(150deg);
+}
+
+.secret-card__mark {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  width: clamp(2rem, 9vw, 2.7rem);
+  height: clamp(2rem, 9vw, 2.7rem);
+  place-items: center;
+  border: 1px solid rgba(181, 138, 89, 0.8);
+  border-radius: 50%;
+  background: rgba(255, 253, 249, 0.86);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(0.65rem, 2.5vw, 0.78rem);
+  letter-spacing: 0.08em;
+}
+
+.secret-card__label {
+  position: relative;
+  z-index: 1;
+  align-self: end;
+  font-size: clamp(0.58rem, 2.4vw, 0.72rem);
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.opening-status {
+  min-height: 5.6rem;
+  padding-top: 1.35rem;
+  text-align: center;
+}
+
+.opening-status .loading-dot {
+  margin: 0.6rem 0 0.75rem;
+}
+
+.opening-status p {
+  margin-bottom: 0.75rem;
+  font-weight: 700;
+}
+
+.opening-error {
+  color: var(--error) !important;
+}
+
+.reward-benefit {
+  margin: 1.5rem 0;
+  color: var(--success) !important;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(2rem, 9vw, 3.25rem);
+  font-weight: 700;
+  line-height: 1.05 !important;
+}
+
+.reward-code {
+  margin: 2rem 0 1.5rem;
+  padding: 1.5rem;
+  border: 1px solid #cfbaa2;
+  border-radius: 1rem;
+  background: #f3e9de;
+  text-align: center;
+}
+
+.reward-code > p:first-child {
+  margin-bottom: 0.5rem;
+  color: var(--mocha);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.reward-code strong {
+  display: block;
+  margin-bottom: 0.65rem;
+  color: var(--chocolate);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: clamp(1.45rem, 7vw, 2.2rem);
+  letter-spacing: 0.08em;
+  overflow-wrap: anywhere;
+  user-select: all;
+}
+
+.reward-code > p:not(:first-child) {
+  margin-bottom: 1rem;
+  font-size: 0.86rem;
+}
+
+.reward-code .copy-status {
+  margin: 0.75rem 0 0;
+  color: var(--success);
+}
+
+.reward-details {
+  display: grid;
+  margin: 0;
+  border-top: 1px solid var(--line);
+}
+
+.reward-details > div {
+  display: grid;
+  padding: 0.9rem 0;
+  border-bottom: 1px solid var(--line);
+  grid-template-columns: minmax(7rem, 0.42fr) minmax(0, 0.58fr);
+  gap: 1rem;
+}
+
+.reward-details dt {
+  color: var(--muted);
+}
+
+.reward-details dd {
+  margin: 0;
+  color: var(--chocolate);
+  font-weight: 750;
+  text-align: right;
+}
+
+@keyframes envelope-open {
+  0% {
+    transform: translateY(0) scale(1);
+  }
+
+  42% {
+    transform: translateY(-10px) scale(1.035);
+  }
+
+  100% {
+    transform: translateY(-2px) scale(1);
+  }
 }
 
 .customer-terms {
@@ -592,6 +838,28 @@ input:disabled {
   .result-column {
     min-height: 18rem;
   }
+
+  .customer-card {
+    padding: 1.5rem;
+    border-radius: 1.1rem;
+  }
+
+  .customer-brand {
+    margin-bottom: 1.65rem;
+  }
+
+  .customer-card--gift-choice h1 {
+    font-size: clamp(1.85rem, 9vw, 2.5rem);
+  }
+
+  .reward-details > div {
+    grid-template-columns: 1fr;
+    gap: 0.3rem;
+  }
+
+  .reward-details dd {
+    text-align: left;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -599,5 +867,11 @@ input:disabled {
   *::before,
   *::after {
     scroll-behavior: auto !important;
+  }
+
+  .secret-card,
+  .secret-card__flap {
+    animation: none !important;
+    transition: none !important;
   }
 }
