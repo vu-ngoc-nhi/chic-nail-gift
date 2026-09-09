@@ -152,6 +152,7 @@ export function PublicGiftPage({ giftToken }: PublicGiftPageProps) {
   if (reward && isRewardResult(reward)) {
     const rewardPresentation = presentReward(reward)
     const revisited = reward.result_code === 'ALREADY_OPENED'
+    const redeemed = reward.reward_status === 'REDEEMED'
 
     return (
       <main className="customer-shell">
@@ -162,6 +163,12 @@ export function PublicGiftPage({ giftToken }: PublicGiftPageProps) {
           {revisited && (
             <p className="customer-revisit-note">Đây là phần quà bạn đã mở trước đó.</p>
           )}
+          {redeemed && (
+            <div className="customer-redeemed-note" role="status">
+              <strong>Đã sử dụng</strong>
+              <span>Phần quà này đã được sử dụng tại Chic.</span>
+            </div>
+          )}
           <p className="reward-benefit">{rewardPresentation.benefit}</p>
           {rewardPresentation.description && (
             <p className="customer-description">{rewardPresentation.description}</p>
@@ -170,10 +177,14 @@ export function PublicGiftPage({ giftToken }: PublicGiftPageProps) {
           <section className="reward-code" aria-labelledby="reward-code-title">
             <p id="reward-code-title">Mã quà của bạn</p>
             <strong>{reward.reward_code}</strong>
-            <p>Giữ lại mã này để sử dụng tại {CUSTOMER_BRAND_NAME}.</p>
-            <button className="button button--secondary" type="button" onClick={() => void copyRewardCode()}>
-              SAO CHÉP MÃ
-            </button>
+            <p>{redeemed
+              ? 'Mã quà này đã được xác nhận sử dụng.'
+              : `Giữ lại mã này để sử dụng tại ${CUSTOMER_BRAND_NAME}.`}</p>
+            {!redeemed && (
+              <button className="button button--secondary" type="button" onClick={() => void copyRewardCode()}>
+                SAO CHÉP MÃ
+              </button>
+            )}
             {copyMessage && <p className="copy-status" role="status">{copyMessage}</p>}
           </section>
 

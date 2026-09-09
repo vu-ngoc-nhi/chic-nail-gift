@@ -122,9 +122,13 @@ export function StaffGiftPage({ email, role, onLogout, onUnauthorized }: StaffGi
     <main className="staff-shell">
       <header className="staff-header">
         <div>
-          <a className="staff-brand" href="/staff" aria-label={`Trang tạo quà ${CUSTOMER_BRAND_NAME}`}>
+          <a className="staff-brand" href="/staff" aria-label={`Trang nhân viên ${CUSTOMER_BRAND_NAME}`}>
             {CUSTOMER_BRAND_NAME}
           </a>
+          <nav className="staff-navigation" aria-label="Công việc nhân viên">
+            <a href="/staff" aria-current="page">Tạo quà</a>
+            <a href="/staff/redeem">Sử dụng quà</a>
+          </nav>
         </div>
         <div className="account-actions">
           <div className="account-summary">

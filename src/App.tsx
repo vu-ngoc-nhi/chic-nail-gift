@@ -2,17 +2,19 @@ import { useEffect } from 'react'
 import './App.css'
 import { CUSTOMER_BRAND_NAME } from './config/presentation.ts'
 import { LoginPage } from './features/auth/LoginPage.tsx'
+import { getStaffRedirectPath } from './features/auth/staffRoute.ts'
 import { useStaffAuth } from './features/auth/useStaffAuth.ts'
 import { PublicGiftPage } from './features/gifts/PublicGiftPage.tsx'
 import { StaffGiftPage } from './features/gifts/StaffGiftPage.tsx'
 import { getGiftTokenFromPath } from './features/gifts/giftPresentation.ts'
+import { StaffRedemptionPage } from './features/rewards/StaffRedemptionPage.tsx'
 
 function StaffApplication() {
   const auth = useStaffAuth()
 
   useEffect(() => {
-    const targetPath = auth.status === 'authorized' ? '/staff' : '/login'
-    if (window.location.pathname !== targetPath) {
+    const targetPath = getStaffRedirectPath(window.location.pathname, auth.status)
+    if (targetPath) {
       window.history.replaceState(null, '', targetPath)
     }
   }, [auth.status])
@@ -63,15 +65,21 @@ function StaffApplication() {
   }
 
   if (auth.status === 'authorized' && auth.role) {
+    const staffProps = {
+      email: auth.email,
+      role: auth.role,
+      onLogout: () => auth.signOut(),
+      onUnauthorized: () => auth.signOut(
+        'Phiên làm việc không còn quyền Staff/Admin. Vui lòng đăng nhập lại hoặc báo quản lý.',
+      ),
+    }
+
+    if (window.location.pathname === '/staff/redeem') {
+      return <StaffRedemptionPage {...staffProps} />
+    }
+
     return (
-      <StaffGiftPage
-        email={auth.email}
-        role={auth.role}
-        onLogout={() => auth.signOut()}
-        onUnauthorized={() => auth.signOut(
-          'Phiên làm việc không còn quyền tạo quà. Vui lòng đăng nhập lại hoặc báo quản lý.',
-        )}
-      />
+      <StaffGiftPage {...staffProps} />
     )
   }
 
