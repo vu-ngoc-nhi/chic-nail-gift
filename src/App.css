@@ -114,7 +114,9 @@ h2,
   font-weight: 700;
 }
 
-input {
+input,
+select,
+textarea {
   width: 100%;
   min-height: 3.25rem;
   padding: 0.75rem 0.9rem;
@@ -123,9 +125,12 @@ input {
   outline: none;
   background: #fff;
   color: var(--chocolate);
+  font: inherit;
 }
 
 input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
 button:focus-visible,
 a:focus-visible {
   outline: 3px solid rgba(181, 138, 89, 0.45);
@@ -136,9 +141,15 @@ input[aria-invalid="true"] {
   border-color: var(--error);
 }
 
-input:disabled {
+input:disabled,
+select:disabled,
+textarea:disabled {
   cursor: not-allowed;
   background: #f0ebe5;
+}
+
+textarea {
+  resize: vertical;
 }
 
 .field-help,
@@ -930,6 +941,281 @@ input:disabled {
   text-align: center;
 }
 
+.message--success {
+  background: rgba(46, 104, 79, 0.1);
+  color: var(--success);
+}
+
+.admin-shell {
+  padding-bottom: 4rem;
+}
+
+.admin-layout {
+  display: grid;
+  max-width: 90rem;
+  margin: 0 auto;
+  grid-template-columns: minmax(17rem, 0.3fr) minmax(0, 0.7fr);
+  align-items: start;
+  gap: 1.25rem;
+}
+
+.admin-campaign-list,
+.admin-workspace {
+  border: 1px solid rgba(138, 107, 89, 0.2);
+  border-radius: 1.25rem;
+  background: var(--paper);
+  box-shadow: 0 14px 45px rgba(64, 43, 32, 0.08);
+}
+
+.admin-campaign-list {
+  position: sticky;
+  top: 1rem;
+  padding: 1.25rem;
+}
+
+.admin-campaign-list h1,
+.admin-panel h2 {
+  margin-bottom: 0;
+}
+
+.admin-campaign-list h1 {
+  font-size: 1.75rem;
+}
+
+.admin-workspace {
+  display: grid;
+  min-height: 32rem;
+  padding: clamp(1.25rem, 3vw, 2rem);
+  gap: 1rem;
+}
+
+.admin-section-title {
+  display: flex;
+  margin-bottom: 1.25rem;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.admin-section-title .step-label {
+  margin-bottom: 0.35rem;
+}
+
+.admin-campaign-items {
+  display: grid;
+  max-height: calc(100svh - 13rem);
+  overflow-y: auto;
+  gap: 0.7rem;
+}
+
+.admin-campaign-item {
+  display: grid;
+  padding: 1rem;
+  border: 1px solid var(--line);
+  border-radius: 0.75rem;
+  background: #fff;
+  color: var(--muted);
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+  gap: 0.35rem;
+}
+
+.admin-campaign-item:hover,
+.admin-campaign-item--active {
+  border-color: var(--accent);
+  background: #fbf6ef;
+}
+
+.admin-campaign-item strong {
+  color: var(--chocolate);
+}
+
+.admin-campaign-item > span:not(.status-pill) {
+  font-size: 0.78rem;
+  line-height: 1.4;
+}
+
+.status-pill,
+.review-badge,
+.prize-kind {
+  width: fit-content;
+  padding: 0.3rem 0.55rem;
+  border-radius: 999px;
+  background: var(--beige);
+  color: var(--chocolate);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+
+.status-pill--active,
+.review-badge--pass {
+  background: rgba(46, 104, 79, 0.13);
+  color: var(--success);
+}
+
+.status-pill--paused,
+.status-pill--scheduled {
+  background: #fff0d7;
+  color: var(--warning);
+}
+
+.status-pill--ended,
+.status-pill--archived {
+  background: #ece9e6;
+  color: var(--muted);
+}
+
+.admin-panel {
+  padding: clamp(1.25rem, 3vw, 2rem);
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  background: #fff;
+}
+
+.admin-form-grid {
+  display: grid;
+  margin-bottom: 1.25rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.admin-field--wide {
+  grid-column: 1 / -1;
+}
+
+.admin-version-label,
+.admin-helper,
+.admin-empty {
+  color: var(--muted);
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+.admin-prize-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.9rem;
+}
+
+.admin-prize {
+  padding: 1rem;
+  border: 1px solid var(--line);
+  border-radius: 0.85rem;
+  background: var(--paper);
+}
+
+.admin-prize--fallback {
+  border-color: var(--accent);
+  background: #fbf3e8;
+}
+
+.admin-prize h3 {
+  margin: 0.5rem 0;
+  color: var(--chocolate);
+}
+
+.admin-prize p {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.admin-prize dl,
+.admin-review-grid {
+  display: grid;
+  margin: 1rem 0 0;
+  gap: 0.5rem;
+}
+
+.admin-prize dl > div,
+.admin-review-grid > div {
+  display: flex;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--line);
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.admin-prize dt,
+.admin-review-grid dt {
+  color: var(--muted);
+}
+
+.admin-prize dd,
+.admin-review-grid dd {
+  margin: 0;
+  color: var(--chocolate);
+  font-weight: 750;
+  text-align: right;
+}
+
+.admin-prize .button-row {
+  margin-top: 1rem;
+}
+
+.admin-prize-form {
+  border-color: var(--accent);
+}
+
+.admin-check-row,
+.admin-inventory-row {
+  padding: 0.85rem;
+  border: 1px solid var(--line);
+  border-radius: 0.7rem;
+  background: #faf7f2;
+}
+
+.admin-inventory-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 9rem;
+  align-items: center;
+  gap: 1rem;
+}
+
+.admin-error-list,
+.fallback-checks {
+  margin: 1rem 0;
+  padding-left: 1.25rem;
+  color: var(--error);
+  line-height: 1.6;
+}
+
+.fallback-checks {
+  display: grid;
+  padding: 0;
+  list-style: none;
+  gap: 0.5rem;
+}
+
+.fallback-checks li::before {
+  margin-right: 0.5rem;
+  content: '○';
+}
+
+.fallback-checks .check-pass {
+  color: var(--success);
+}
+
+.fallback-checks .check-pass::before {
+  content: '✓';
+}
+
+.admin-review-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.admin-review-grid > div {
+  padding: 0.75rem;
+  border: 1px solid var(--line);
+  border-radius: 0.65rem;
+  background: var(--paper);
+}
+
+.lifecycle-actions {
+  margin-top: 0;
+}
+
 @media (max-width: 850px) {
   .staff-layout,
   .staff-layout--redemption {
@@ -943,6 +1229,19 @@ input:disabled {
 
   .result-column {
     min-height: 22rem;
+  }
+
+  .admin-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-campaign-list {
+    position: static;
+  }
+
+  .admin-campaign-items {
+    max-height: none;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
@@ -1004,6 +1303,26 @@ input:disabled {
 
   .reward-details dd {
     text-align: left;
+  }
+
+  .admin-campaign-items,
+  .admin-prize-list,
+  .admin-form-grid,
+  .admin-review-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-field--wide {
+    grid-column: auto;
+  }
+
+  .admin-section-title {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .admin-inventory-row {
+    grid-template-columns: 1fr;
   }
 }
 

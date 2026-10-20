@@ -177,6 +177,7 @@ export function StaffRedemptionPage({
           <nav className="staff-navigation" aria-label="Công việc nhân viên">
             <a href="/staff">Tạo quà</a>
             <a href="/staff/redeem" aria-current="page">Sử dụng quà</a>
+            {role === 'ADMIN' && <a href="/admin/campaigns">Chương trình</a>}
           </nav>
         </div>
         <div className="account-actions">

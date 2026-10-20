@@ -128,6 +128,7 @@ export function StaffGiftPage({ email, role, onLogout, onUnauthorized }: StaffGi
           <nav className="staff-navigation" aria-label="Công việc nhân viên">
             <a href="/staff" aria-current="page">Tạo quà</a>
             <a href="/staff/redeem">Sử dụng quà</a>
+            {role === 'ADMIN' && <a href="/admin/campaigns">Chương trình</a>}
           </nav>
         </div>
         <div className="account-actions">

@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import './App.css'
 import { CUSTOMER_BRAND_NAME } from './config/presentation.ts'
+import { AdminCampaignPage, AdminUnauthorizedState } from './features/admin/AdminCampaignPage.tsx'
 import { LoginPage } from './features/auth/LoginPage.tsx'
 import { getStaffRedirectPath } from './features/auth/staffRoute.ts'
 import { useStaffAuth } from './features/auth/useStaffAuth.ts'
@@ -13,11 +14,11 @@ function StaffApplication() {
   const auth = useStaffAuth()
 
   useEffect(() => {
-    const targetPath = getStaffRedirectPath(window.location.pathname, auth.status)
+    const targetPath = getStaffRedirectPath(window.location.pathname, auth.status, auth.role)
     if (targetPath) {
       window.history.replaceState(null, '', targetPath)
     }
-  }, [auth.status])
+  }, [auth.role, auth.status])
 
   if (auth.status === 'configuration-error') {
     return (
@@ -76,6 +77,12 @@ function StaffApplication() {
 
     if (window.location.pathname === '/staff/redeem') {
       return <StaffRedemptionPage {...staffProps} />
+    }
+
+    if (window.location.pathname === '/admin/campaigns') {
+      return auth.role === 'ADMIN'
+        ? <AdminCampaignPage {...staffProps} />
+        : <AdminUnauthorizedState />
     }
 
     return (
